@@ -1,5 +1,8 @@
 package com.example.staffSeatsBackend.service.impl;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,6 +95,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 
 		return new getInfoRes(RtnMsg.GET_EMPLOYEE_INFO_SUCCESSFUL, employee);
+	}
+
+	@Override
+	public getInfoRes getAllInfo() {
+		List<Employee> employeeList = employeeDao.findAll();
+
+		// 若員工沒有資料 => 給一個空List
+		employeeList = employeeList.size() != 0 ? employeeList : Collections.emptyList();
+		return new getInfoRes(RtnMsg.GET_EMPLOYEE_INFO_SUCCESSFUL, employeeList);
 	}
 
 }

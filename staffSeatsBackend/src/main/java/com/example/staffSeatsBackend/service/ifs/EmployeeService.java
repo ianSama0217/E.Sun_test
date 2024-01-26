@@ -19,4 +19,9 @@ public interface EmployeeService {
 	 * 查看員工資料
 	 **/
 	public getInfoRes getInfo(String id);
+	
+	/**
+	 * 顯示所有員工資料
+	 **/
+	public getInfoRes getAllInfo();
 }

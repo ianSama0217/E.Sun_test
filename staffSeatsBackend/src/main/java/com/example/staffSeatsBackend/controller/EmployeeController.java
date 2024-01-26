@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.staffSeatsBackend.constants.RtnMsg;
@@ -17,8 +16,6 @@ import com.example.staffSeatsBackend.entity.Employee;
 import com.example.staffSeatsBackend.service.ifs.EmployeeService;
 import com.example.staffSeatsBackend.vo.BasicRes;
 import com.example.staffSeatsBackend.vo.getInfoRes;
-
-import jakarta.transaction.Transactional;
 
 @CrossOrigin
 @RestController
@@ -64,6 +61,14 @@ public class EmployeeController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
 		}
 
+		return ResponseEntity.status(HttpStatus.OK).body(res);
+	}
+	
+	//顯示所有員工
+	@GetMapping(value = "/employee")
+	public ResponseEntity<getInfoRes> getAllInfo() {
+		getInfoRes res = service.getAllInfo();
+		
 		return ResponseEntity.status(HttpStatus.OK).body(res);
 	}
 }
