@@ -9,6 +9,9 @@ public enum RtnMsg {
 	EMAIL_IS_EXIST("信箱已存在"), //
 	CREATE_EMPLOYEE_FAILED("新增員工失敗"), //
 	CREATE_EMPLOYEE_SUCCESSFUL("新增員工成功"), //
+	FLOOR_IS_EXIST("樓層已存在"), //
+	CREATE_FLOOR_FAILED("新增樓層失敗"), //
+	CREATE_FLOOR_SUCCESSFUL("新增樓層成功"), //
 	;
 
 	private String message;

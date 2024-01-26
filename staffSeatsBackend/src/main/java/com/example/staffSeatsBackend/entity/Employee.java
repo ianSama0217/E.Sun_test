@@ -28,7 +28,7 @@ public class Employee {
 	// 員工座位編號
 	@Column(name = "FLOOR_SEAT_SEQ")
 	@JsonProperty("floor_seat_seq")
-	private Integer floorSeatSeq;
+	private String floorSeatSeq;
 
 	public Employee() {
 		super();
@@ -58,11 +58,11 @@ public class Employee {
 		this.email = email;
 	}
 
-	public Integer getFloorSeatSeq() {
+	public String getFloorSeatSeq() {
 		return floorSeatSeq;
 	}
 
-	public void setFloorSeatSeq(Integer floorSeatSeq) {
+	public void setFloorSeatSeq(String floorSeatSeq) {
 		this.floorSeatSeq = floorSeatSeq;
 	}
 
