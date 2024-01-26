@@ -2,7 +2,7 @@ package com.example.staffSeatsBackend.service.ifs;
 
 import com.example.staffSeatsBackend.entity.Employee;
 import com.example.staffSeatsBackend.vo.BasicRes;
-import com.example.staffSeatsBackend.vo.getInfoRes;
+import com.example.staffSeatsBackend.vo.GetInfoRes;
 
 public interface EmployeeService {
 	/**
@@ -18,10 +18,10 @@ public interface EmployeeService {
 	/**
 	 * 查看員工資料
 	 **/
-	public getInfoRes getInfo(String id);
+	public GetInfoRes getInfo(String id);
 	
 	/**
 	 * 顯示所有員工資料
 	 **/
-	public getInfoRes getAllInfo();
+	public GetInfoRes getAllInfo();
 }

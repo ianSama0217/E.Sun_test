@@ -1,6 +1,7 @@
 package com.example.staffSeatsBackend.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import com.example.staffSeatsBackend.repository.SeatingChartDao;
 import com.example.staffSeatsBackend.service.ifs.SeatingChartService;
 import com.example.staffSeatsBackend.vo.BasicRes;
 import com.example.staffSeatsBackend.vo.CreateFloorReq;
+import com.example.staffSeatsBackend.vo.GetSeatInfoRes;
 
 @Service
 public class SeatingChartServiceImpl implements SeatingChartService {
@@ -60,6 +62,30 @@ public class SeatingChartServiceImpl implements SeatingChartService {
 		}
 
 		return new BasicRes(RtnMsg.CREATE_FLOOR_SUCCESSFUL);
+	}
+
+	@Override
+	public GetSeatInfoRes getSeatInfo(String id) {
+		if (!seatingChartDao.existsById(id)) {
+			return new GetSeatInfoRes(RtnMsg.SEAT_ID_NOT_FOUND);
+		}
+
+		SeatingChart seatingChart = seatingChartDao.findById(id).get();
+		// 檢查資料內容
+		if (seatingChart == null) {
+			return new GetSeatInfoRes(RtnMsg.SEAT_DATA_ERROR);
+		}
+
+		return new GetSeatInfoRes(RtnMsg.GET_SEAT_INFO_SUCCESSFUL);
+	}
+
+	@Override
+	public GetSeatInfoRes getAllInfo() {
+		List<SeatingChart> seatingChartList = seatingChartDao.findAll();
+
+		// 若座位沒有資料 => 給一個空List
+		seatingChartList = seatingChartList.size() != 0 ? seatingChartList : Collections.emptyList();
+		return new GetSeatInfoRes(RtnMsg.GET_SEAT_INFO_SUCCESSFUL, seatingChartList);
 	}
 
 }

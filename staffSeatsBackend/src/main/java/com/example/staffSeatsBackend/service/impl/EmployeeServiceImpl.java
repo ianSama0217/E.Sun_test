@@ -14,7 +14,7 @@ import com.example.staffSeatsBackend.entity.Employee;
 import com.example.staffSeatsBackend.repository.EmployeeDao;
 import com.example.staffSeatsBackend.service.ifs.EmployeeService;
 import com.example.staffSeatsBackend.vo.BasicRes;
-import com.example.staffSeatsBackend.vo.getInfoRes;
+import com.example.staffSeatsBackend.vo.GetInfoRes;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -83,27 +83,27 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public getInfoRes getInfo(String id) {
+	public GetInfoRes getInfo(String id) {
 		if (!employeeDao.existsById(id)) {
-			return new getInfoRes(RtnMsg.EMP_ID_NOT_FOUND);
+			return new GetInfoRes(RtnMsg.EMP_ID_NOT_FOUND);
 		}
 
 		Employee employee = employeeDao.findById(id).get();
 		// 檢查取得資料
 		if (employee == null) {
-			return new getInfoRes(RtnMsg.EMPLOYEE_DATA_ERROR);
+			return new GetInfoRes(RtnMsg.EMPLOYEE_DATA_ERROR);
 		}
 
-		return new getInfoRes(RtnMsg.GET_EMPLOYEE_INFO_SUCCESSFUL, employee);
+		return new GetInfoRes(RtnMsg.GET_EMPLOYEE_INFO_SUCCESSFUL, employee);
 	}
 
 	@Override
-	public getInfoRes getAllInfo() {
+	public GetInfoRes getAllInfo() {
 		List<Employee> employeeList = employeeDao.findAll();
 
 		// 若員工沒有資料 => 給一個空List
 		employeeList = employeeList.size() != 0 ? employeeList : Collections.emptyList();
-		return new getInfoRes(RtnMsg.GET_EMPLOYEE_INFO_SUCCESSFUL, employeeList);
+		return new GetInfoRes(RtnMsg.GET_EMPLOYEE_INFO_SUCCESSFUL, employeeList);
 	}
 
 }

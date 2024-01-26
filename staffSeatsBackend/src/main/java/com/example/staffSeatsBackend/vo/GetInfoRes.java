@@ -5,29 +5,29 @@ import java.util.List;
 import com.example.staffSeatsBackend.constants.RtnMsg;
 import com.example.staffSeatsBackend.entity.Employee;
 
-public class getInfoRes {
+public class GetInfoRes {
 	private RtnMsg rtnMsg;
 
 	private Employee employee;
 
 	private List<Employee> employeeList;
 
-	public getInfoRes() {
+	public GetInfoRes() {
 		super();
 	}
 
-	public getInfoRes(RtnMsg rtnMsg) {
+	public GetInfoRes(RtnMsg rtnMsg) {
 		super();
 		this.rtnMsg = rtnMsg;
 	}
 
-	public getInfoRes(RtnMsg rtnMsg, Employee employee) {
+	public GetInfoRes(RtnMsg rtnMsg, Employee employee) {
 		super();
 		this.rtnMsg = rtnMsg;
 		this.employee = employee;
 	}
 
-	public getInfoRes(RtnMsg rtnMsg, List<Employee> employeeList) {
+	public GetInfoRes(RtnMsg rtnMsg, List<Employee> employeeList) {
 		super();
 		this.rtnMsg = rtnMsg;
 		this.employeeList = employeeList;

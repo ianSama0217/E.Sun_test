@@ -15,7 +15,7 @@ import com.example.staffSeatsBackend.constants.RtnMsg;
 import com.example.staffSeatsBackend.entity.Employee;
 import com.example.staffSeatsBackend.service.ifs.EmployeeService;
 import com.example.staffSeatsBackend.vo.BasicRes;
-import com.example.staffSeatsBackend.vo.getInfoRes;
+import com.example.staffSeatsBackend.vo.GetInfoRes;
 
 @CrossOrigin
 @RestController
@@ -52,10 +52,10 @@ public class EmployeeController {
 
 	// 查詢員工資料
 	@GetMapping(value = "/employee/{id}")
-	public ResponseEntity<getInfoRes> getInfo(//
+	public ResponseEntity<GetInfoRes> getInfo(//
 			@PathVariable(name = "id") String id) {
 
-		getInfoRes res = service.getInfo(id);
+		GetInfoRes res = service.getInfo(id);
 
 		if (!res.getRtnMsg().equals(RtnMsg.GET_EMPLOYEE_INFO_SUCCESSFUL)) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
@@ -66,8 +66,8 @@ public class EmployeeController {
 	
 	//顯示所有員工
 	@GetMapping(value = "/employee")
-	public ResponseEntity<getInfoRes> getAllInfo() {
-		getInfoRes res = service.getAllInfo();
+	public ResponseEntity<GetInfoRes> getAllInfo() {
+		GetInfoRes res = service.getAllInfo();
 		
 		return ResponseEntity.status(HttpStatus.OK).body(res);
 	}

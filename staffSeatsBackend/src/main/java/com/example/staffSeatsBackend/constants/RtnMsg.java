@@ -16,7 +16,10 @@ public enum RtnMsg {
 	DELETE_EMPLOYEE_FAILED("刪除員工失敗"), //
 	DELETE_EMPLOYEE_SUCCESSFUL("刪除員工成功"), //
 	EMPLOYEE_DATA_ERROR("員工資料異常"), //
-	GET_EMPLOYEE_INFO_SUCCESSFUL("取得員工資料"),//
+	GET_EMPLOYEE_INFO_SUCCESSFUL("取得員工資料"), //
+	SEAT_ID_NOT_FOUND("找不到座位編號"), //
+	SEAT_DATA_ERROR("座位資料異常"), //
+	GET_SEAT_INFO_SUCCESSFUL("取得座位資料"),//
 	;
 
 	private String message;
