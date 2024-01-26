@@ -12,6 +12,11 @@ public enum RtnMsg {
 	FLOOR_IS_EXIST("樓層已存在"), //
 	CREATE_FLOOR_FAILED("新增樓層失敗"), //
 	CREATE_FLOOR_SUCCESSFUL("新增樓層成功"), //
+	EMP_ID_NOT_FOUND("找不到員工編號"), //
+	DELETE_EMPLOYEE_FAILED("刪除員工失敗"), //
+	DELETE_EMPLOYEE_SUCCESSFUL("刪除員工成功"), //
+	EMPLOYEE_DATA_ERROR("員工資料異常"), //
+	GET_EMPLOYEE_INFO_SUCCESSFUL("取得員工資料"),//
 	;
 
 	private String message;

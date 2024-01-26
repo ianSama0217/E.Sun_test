@@ -16,20 +16,18 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-    //°Ñ¼ÆÅçÃÒ
+ 	implementation 'org.springframework.boot:spring-boot-starter-web'
+    //åƒæ•¸é©—è­‰
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    //³s±µ¸ê®Æ®w
+    //é€£æ¥è³‡æ–™åº«
     implementation 'mysql:mysql-connector-java:8.0.33'
-    //¨Ï¥ÎJPA
+    //ä½¿ç”¨JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    //¸T¥ÎJunit4
+    //ç¦ç”¨Junit4
     implementation 'org.junit.vintage:junit-vintage-engine'
     //Hot Deployment
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    //h2¸ê®Æ®w
+    //h2è³‡æ–™åº«
     implementation 'com.h2database:h2:2.2.224'
 	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
