@@ -7,8 +7,8 @@ const getAllSeat = () => {
   return axios
     .get(`${API_URL}/seat`)
     .then((res) => {
-      //console.log(res.data.seatingChartList);
-      return res.data.seatingChartList;
+      // console.log(res.data.seatInfoList);
+      return res.data.seatInfoList;
     })
     .catch((e) => {
       throw e;

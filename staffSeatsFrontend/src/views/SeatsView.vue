@@ -15,9 +15,18 @@ onMounted(async () => {
   <div class="body">
     <div class="seatArea">
       <div v-for="(item, index) in seats" :key="index" class="seatChart">
-        <div class="seatBox">
-          <span>{{ item.floor_no }}樓:</span>
-          <span>座位{{ item.seat_no }}</span>
+        <div
+          class="seatBox"
+          :class="{
+            empty: item.seatingChart.state == '空位',
+            used: item.seatingChart.state == '已佔用',
+          }"
+        >
+          <span>{{ item.seatingChart.floor_no }}樓:</span>
+          <span>座位{{ item.seatingChart.seat_no }}</span>
+          <span v-if="item.employee != null"
+            >[員編:{{ item.employee.emp_id }}]</span
+          >
         </div>
       </div>
     </div>
@@ -60,6 +69,22 @@ onMounted(async () => {
         padding: 0.2rem 0.5rem;
         border-radius: 8px;
         border: 1px solid #777;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      .empty {
+        background-color: #f1f1f1;
+      }
+
+      .used {
+        background-color: #df0000;
+        color: white;
       }
     }
   }
