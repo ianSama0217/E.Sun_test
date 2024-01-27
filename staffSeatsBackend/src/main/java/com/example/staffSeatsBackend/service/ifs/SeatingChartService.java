@@ -16,6 +16,11 @@ public interface SeatingChartService {
 	 * 設定座位給user使用
 	 **/
 	public BasicRes insertUser(InsertUserReq req);
+	
+	/**
+	 * 清除座位的user(參數:floor_seat_seq)
+	 **/
+	public BasicRes clearUser(String seatId);
 
 	/**
 	 * 顯示座位資訊(單筆)

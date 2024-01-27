@@ -70,4 +70,17 @@ public class SeatingChartController {
 		return ResponseEntity.status(HttpStatus.OK).body(res);
 	}
 
+	// 清除座位的使用者
+	@PatchMapping(value = "/seat/{seat_id}")
+	public ResponseEntity<BasicRes> clearUser(//
+			@PathVariable(name = "seat_id") String seatId) {
+		BasicRes res = service.clearUser(seatId);
+
+		if (!res.getRtnMsg().equals(RtnMsg.CLEAR_USER_SUCCESSFUL)) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+		}
+
+		return ResponseEntity.status(HttpStatus.OK).body(res);
+	}
+
 }

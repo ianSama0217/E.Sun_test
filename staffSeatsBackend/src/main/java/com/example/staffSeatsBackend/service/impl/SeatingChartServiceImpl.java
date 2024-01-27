@@ -118,17 +118,17 @@ public class SeatingChartServiceImpl implements SeatingChartService {
 
 		for (SeatingChart seat : seatingChartList) {
 			SeatEmpVo seatEmpVo = new SeatEmpVo();
-			
+
 			seatEmpVo.setSeatingChart(seat);
 			// 檢查指定座位是否有員工使用
 			if (!employeeDao.existsByFloorSeatSeq(seat.getFloorSeatSeq())) {
 				seatEmpVoList.add(seatEmpVo);
+			} else {
+				// 若有員工使用 => 加入員工資料
+				Employee employee = employeeDao.findByFloorSeatSeq(seat.getFloorSeatSeq());
+				seatEmpVo.setEmployee(employee);
+				seatEmpVoList.add(seatEmpVo);
 			}
-
-			// 若有員工使用 => 加入員工資料
-			Employee employee = employeeDao.findByFloorSeatSeq(seat.getFloorSeatSeq());
-			seatEmpVo.setEmployee(employee);
-			seatEmpVoList.add(seatEmpVo);
 		}
 
 		return new GetSeatInfoRes(RtnMsg.GET_SEAT_INFO_SUCCESSFUL, seatEmpVoList);
@@ -154,6 +154,18 @@ public class SeatingChartServiceImpl implements SeatingChartService {
 			return new BasicRes(RtnMsg.SEAT_ID_NOT_FOUND);
 		}
 
+		// 檢查座位是否有使用者
+		SeatingChart seatingChart = seatingChartDao.findById(seatId).get();
+		if (seatingChart.getState().matches("已佔用")) {
+			return new BasicRes(RtnMsg.SEAT_HAD_USER);
+		}
+
+		Employee employee = employeeDao.findById(empId).get();
+		// 檢查員工是否已經有座位
+		if (StringUtils.hasText(employee.getFloorSeatSeq())) {
+			return new BasicRes(RtnMsg.EMPLOYEE_HAD_SEAT);
+		}
+
 		try {
 			employeeDao.updateSeatId(empId, seatId);
 			seatingChartDao.updateState(seatId);
@@ -163,6 +175,38 @@ public class SeatingChartServiceImpl implements SeatingChartService {
 		}
 
 		return new BasicRes(RtnMsg.INSERT_USER_SUCCESSFUL);
+	}
+
+	@Transactional
+	@Override
+	public BasicRes clearUser(String seatId) {
+
+		// 檢查參數
+		if (!StringUtils.hasText(seatId)) {
+			return new BasicRes(RtnMsg.PARAM_ERROR);
+		}
+
+		if (!seatingChartDao.existsById(seatId)) {
+			return new BasicRes(RtnMsg.SEAT_ID_NOT_FOUND);
+		}
+
+		// 取得員工id
+		Employee employee = employeeDao.findByFloorSeatSeq(seatId);
+
+		if (employee == null) {
+			return new BasicRes(RtnMsg.EMPLOYEE_DATA_ERROR);
+		}
+		String empId = employee.getEmpId();
+
+		try {
+			employeeDao.clearSeatId(empId);
+			seatingChartDao.clearState(seatId);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return new BasicRes(RtnMsg.CLEAR_USER_FAILED);
+		}
+
+		return new BasicRes(RtnMsg.CLEAR_USER_SUCCESSFUL);
 	}
 
 }

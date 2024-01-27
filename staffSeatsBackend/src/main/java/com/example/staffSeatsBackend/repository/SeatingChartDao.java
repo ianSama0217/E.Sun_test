@@ -21,4 +21,11 @@ public interface SeatingChartDao extends JpaRepository<SeatingChart, String> {
 	@Query(value = "UPDATE seatingchart SET STATE = '已佔用'"//
 			+ " WHERE FLOOR_SEAT_SEQ = :id", nativeQuery = true)
 	public int updateState(@Param("id") String seatId);
+
+	// 更新座位狀態(空位)
+	@Modifying(clearAutomatically = true)
+	@Transactional
+	@Query(value = "UPDATE seatingchart SET STATE = '空位'"//
+			+ " WHERE FLOOR_SEAT_SEQ = :id", nativeQuery = true)
+	public int clearState(@Param("id") String seatId);
 }

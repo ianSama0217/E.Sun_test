@@ -38,4 +38,11 @@ public interface EmployeeDao extends JpaRepository<Employee, String> {
 			+ " WHERE EMP_ID = :empId", nativeQuery = true)
 	public int updateSeatId(@Param("empId") String empId, //
 			@Param("seatId") String seatId);
+
+	// 清除座位編號
+	@Modifying(clearAutomatically = true)
+	@Transactional
+	@Query(value = "UPDATE employee SET FLOOR_SEAT_SEQ = null" //
+			+ " WHERE EMP_ID = :empId", nativeQuery = true)
+	public int clearSeatId(@Param("empId") String empId);
 }
