@@ -107,14 +107,31 @@ public class SeatingChartServiceImpl implements SeatingChartService {
 
 	@Override
 	public GetSeatInfoRes getAllInfo() {
+		// 存放座位及員工資料
+		List<SeatEmpVo> seatEmpVoList = new ArrayList<>();
+
+		// 顯示所有座位
 		List<SeatingChart> seatingChartList = seatingChartDao.findAll();
 
 		// 若座位沒有資料 => 給一個空List
 		seatingChartList = seatingChartList.size() != 0 ? seatingChartList : Collections.emptyList();
 
-		// TODO 加入對應的員工資料
+		for (SeatingChart seat : seatingChartList) {
+			SeatEmpVo seatEmpVo = new SeatEmpVo();
+			
+			seatEmpVo.setSeatingChart(seat);
+			// 檢查指定座位是否有員工使用
+			if (!employeeDao.existsByFloorSeatSeq(seat.getFloorSeatSeq())) {
+				seatEmpVoList.add(seatEmpVo);
+			}
 
-		return new GetSeatInfoRes(RtnMsg.GET_SEAT_INFO_SUCCESSFUL);
+			// 若有員工使用 => 加入員工資料
+			Employee employee = employeeDao.findByFloorSeatSeq(seat.getFloorSeatSeq());
+			seatEmpVo.setEmployee(employee);
+			seatEmpVoList.add(seatEmpVo);
+		}
+
+		return new GetSeatInfoRes(RtnMsg.GET_SEAT_INFO_SUCCESSFUL, seatEmpVoList);
 	}
 
 	@Transactional

@@ -18,12 +18,12 @@ public interface SeatingChartService {
 	public BasicRes insertUser(InsertUserReq req);
 
 	/**
-	 * TODO 包含座位上有人的員工資料 顯示座位資訊
+	 * 顯示座位資訊(單筆)
 	 **/
 	public GetSeatInfoRes getSeatInfo(String id);
 
 	/**
-	 * TODO 包含座位上有人的員工資料
+	 * 顯示所有座位資訊
 	 **/
 	public GetSeatInfoRes getAllInfo();
 }
