@@ -1,9 +1,13 @@
 package com.example.staffSeatsBackend.vo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class InsertUserReq {
 
+	@JsonProperty("emp_id")
 	private String empId;
 
+	@JsonProperty("seat_id")
 	private String seatId;
 
 	public InsertUserReq() {

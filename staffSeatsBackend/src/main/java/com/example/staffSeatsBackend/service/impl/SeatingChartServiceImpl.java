@@ -12,11 +12,15 @@ import org.springframework.util.StringUtils;
 
 import com.example.staffSeatsBackend.constants.RtnMsg;
 import com.example.staffSeatsBackend.entity.SeatingChart;
+import com.example.staffSeatsBackend.repository.EmployeeDao;
 import com.example.staffSeatsBackend.repository.SeatingChartDao;
 import com.example.staffSeatsBackend.service.ifs.SeatingChartService;
 import com.example.staffSeatsBackend.vo.BasicRes;
 import com.example.staffSeatsBackend.vo.CreateFloorReq;
 import com.example.staffSeatsBackend.vo.GetSeatInfoRes;
+import com.example.staffSeatsBackend.vo.InsertUserReq;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class SeatingChartServiceImpl implements SeatingChartService {
@@ -25,6 +29,9 @@ public class SeatingChartServiceImpl implements SeatingChartService {
 
 	@Autowired
 	private SeatingChartDao seatingChartDao;
+
+	@Autowired
+	private EmployeeDao employeeDao;
 
 	@Override
 	public BasicRes addFloor(CreateFloorReq req) {
@@ -86,6 +93,37 @@ public class SeatingChartServiceImpl implements SeatingChartService {
 		// 若座位沒有資料 => 給一個空List
 		seatingChartList = seatingChartList.size() != 0 ? seatingChartList : Collections.emptyList();
 		return new GetSeatInfoRes(RtnMsg.GET_SEAT_INFO_SUCCESSFUL, seatingChartList);
+	}
+
+	@Transactional
+	@Override
+	public BasicRes insertUser(InsertUserReq req) {
+		String empId = req.getEmpId();
+		String seatId = req.getSeatId();
+
+		// 檢查參數
+		if (!StringUtils.hasText(empId) || //
+				!StringUtils.hasText(seatId)) {
+			return new BasicRes(RtnMsg.PARAM_ERROR);
+		}
+
+		if (!employeeDao.existsById(empId)) {
+			return new BasicRes(RtnMsg.EMP_ID_NOT_FOUND);
+		}
+
+		if (!seatingChartDao.existsById(seatId)) {
+			return new BasicRes(RtnMsg.SEAT_ID_NOT_FOUND);
+		}
+
+		try {
+			employeeDao.updateSeatId(empId, seatId);
+			seatingChartDao.updateState(seatId);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return new BasicRes(RtnMsg.INSERT_USER_FAILED);
+		}
+
+		return new BasicRes(RtnMsg.INSERT_USER_SUCCESSFUL);
 	}
 
 }

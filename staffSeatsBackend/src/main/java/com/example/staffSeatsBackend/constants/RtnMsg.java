@@ -20,6 +20,8 @@ public enum RtnMsg {
 	SEAT_ID_NOT_FOUND("找不到座位編號"), //
 	SEAT_DATA_ERROR("座位資料異常"), //
 	GET_SEAT_INFO_SUCCESSFUL("取得座位資料"),//
+	INSERT_USER_FAILED("新增使用者失敗"), //
+	INSERT_USER_SUCCESSFUL("新增使用者成功"), //
 	;
 
 	private String message;
