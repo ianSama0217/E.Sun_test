@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.example.staffSeatsBackend.constants.RtnMsg;
+import com.example.staffSeatsBackend.entity.Employee;
 import com.example.staffSeatsBackend.entity.SeatingChart;
 import com.example.staffSeatsBackend.repository.EmployeeDao;
 import com.example.staffSeatsBackend.repository.SeatingChartDao;
@@ -19,6 +20,7 @@ import com.example.staffSeatsBackend.vo.BasicRes;
 import com.example.staffSeatsBackend.vo.CreateFloorReq;
 import com.example.staffSeatsBackend.vo.GetSeatInfoRes;
 import com.example.staffSeatsBackend.vo.InsertUserReq;
+import com.example.staffSeatsBackend.vo.SeatEmpVo;
 
 import jakarta.transaction.Transactional;
 
@@ -77,13 +79,30 @@ public class SeatingChartServiceImpl implements SeatingChartService {
 			return new GetSeatInfoRes(RtnMsg.SEAT_ID_NOT_FOUND);
 		}
 
-		SeatingChart seatingChart = seatingChartDao.findById(id).get();
+		// 存放座位及員工資料
+		SeatEmpVo seatEmpVo = new SeatEmpVo();
+
+		SeatingChart seatInfo = seatingChartDao.findById(id).get();
 		// 檢查資料內容
-		if (seatingChart == null) {
+		if (seatInfo == null) {
 			return new GetSeatInfoRes(RtnMsg.SEAT_DATA_ERROR);
 		}
 
-		return new GetSeatInfoRes(RtnMsg.GET_SEAT_INFO_SUCCESSFUL);
+		// 加入座位資訊
+		seatEmpVo.setSeatingChart(seatInfo);
+
+		// 確認座位是否有使用者
+		if (!employeeDao.existsByFloorSeatSeq(id)) {
+			// 回傳座位資訊
+			return new GetSeatInfoRes(RtnMsg.GET_SEAT_INFO_SUCCESSFUL, seatEmpVo);
+		}
+
+		Employee employee = employeeDao.findByFloorSeatSeq(id);
+		seatEmpVo.setEmployee(employee);
+
+		// 回傳座位+員工資訊
+		return new GetSeatInfoRes(RtnMsg.GET_SEAT_INFO_SUCCESSFUL, seatEmpVo);
+
 	}
 
 	@Override
@@ -92,7 +111,10 @@ public class SeatingChartServiceImpl implements SeatingChartService {
 
 		// 若座位沒有資料 => 給一個空List
 		seatingChartList = seatingChartList.size() != 0 ? seatingChartList : Collections.emptyList();
-		return new GetSeatInfoRes(RtnMsg.GET_SEAT_INFO_SUCCESSFUL, seatingChartList);
+
+		// TODO 加入對應的員工資料
+
+		return new GetSeatInfoRes(RtnMsg.GET_SEAT_INFO_SUCCESSFUL);
 	}
 
 	@Transactional

@@ -23,7 +23,7 @@ public interface SeatingChartService {
 	public GetSeatInfoRes getSeatInfo(String id);
 
 	/**
-	 * TODO 包含座位上有人的員工資料 TODO 依照樓層排序 顯示所有座位
+	 * TODO 包含座位上有人的員工資料
 	 **/
 	public GetSeatInfoRes getAllInfo();
 }

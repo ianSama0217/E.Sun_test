@@ -3,14 +3,13 @@ package com.example.staffSeatsBackend.vo;
 import java.util.List;
 
 import com.example.staffSeatsBackend.constants.RtnMsg;
-import com.example.staffSeatsBackend.entity.SeatingChart;
 
 public class GetSeatInfoRes {
 	private RtnMsg rtnMsg;
 
-	private SeatingChart seatingChart;
+	private SeatEmpVo seatInfo;
 
-	private List<SeatingChart> seatingChartList;
+	private List<SeatEmpVo> seatInfoList;
 
 	public GetSeatInfoRes() {
 		super();
@@ -21,28 +20,39 @@ public class GetSeatInfoRes {
 		this.rtnMsg = rtnMsg;
 	}
 
-	public GetSeatInfoRes(RtnMsg rtnMsg, SeatingChart seatingChart) {
+	public GetSeatInfoRes(RtnMsg rtnMsg, List<SeatEmpVo> seatInfoList) {
 		super();
 		this.rtnMsg = rtnMsg;
-		this.seatingChart = seatingChart;
+		this.seatInfoList = seatInfoList;
 	}
 
-	public GetSeatInfoRes(RtnMsg rtnMsg, List<SeatingChart> seatingChartList) {
+	public GetSeatInfoRes(RtnMsg rtnMsg, SeatEmpVo seatInfo) {
 		super();
 		this.rtnMsg = rtnMsg;
-		this.seatingChartList = seatingChartList;
+		this.seatInfo = seatInfo;
 	}
 
 	public RtnMsg getRtnMsg() {
 		return rtnMsg;
 	}
 
-	public SeatingChart getSeatingChart() {
-		return seatingChart;
+	public void setRtnMsg(RtnMsg rtnMsg) {
+		this.rtnMsg = rtnMsg;
 	}
 
-	public List<SeatingChart> getSeatingChartList() {
-		return seatingChartList;
+	public SeatEmpVo getSeatInfo() {
+		return seatInfo;
 	}
 
+	public void setSeatInfo(SeatEmpVo seatInfo) {
+		this.seatInfo = seatInfo;
+	}
+
+	public List<SeatEmpVo> getSeatInfoList() {
+		return seatInfoList;
+	}
+
+	public void setSeatInfoList(List<SeatEmpVo> seatInfoList) {
+		this.seatInfoList = seatInfoList;
+	}
 }

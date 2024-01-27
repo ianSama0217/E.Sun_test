@@ -16,6 +16,12 @@ public interface EmployeeDao extends JpaRepository<Employee, String> {
 	// 確認信箱是否存在
 	public boolean existsByEmail(String email);
 
+	// 確認是否有座位編號(參數:FloorSeatSeq)
+	public boolean existsByFloorSeatSeq(String id);
+
+	// 找尋對應座位編號的員工資料(參數:FloorSeatSeq)
+	public Employee findByFloorSeatSeq(String id);
+
 	// 新增員工資料
 	@Modifying(clearAutomatically = true)
 	@Transactional
