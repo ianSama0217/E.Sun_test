@@ -193,8 +193,15 @@ public class SeatingChartServiceImpl implements SeatingChartService {
 		// 取得員工id
 		Employee employee = employeeDao.findByFloorSeatSeq(seatId);
 
+		// 座位狀態(空位 => 空位)沒有填入員工編號
 		if (employee == null) {
-			return new BasicRes(RtnMsg.EMPLOYEE_DATA_ERROR);
+			try {
+				seatingChartDao.clearState(seatId);
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+				return new BasicRes(RtnMsg.CLEAR_USER_FAILED);
+			}
+			return new BasicRes(RtnMsg.CLEAR_USER_SUCCESSFUL);
 		}
 		String empId = employee.getEmpId();
 
