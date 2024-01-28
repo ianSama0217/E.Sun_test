@@ -84,7 +84,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 		// 檢查員工是否有座位
 		if (employee.getFloorSeatSeq() != null) {
-			String seatId = employeeDao.findById(id).get().getFloorSeatSeq();
+			String seatId = employee.getFloorSeatSeq();
 
 			try {
 				seatingChartDao.clearState(seatId);
