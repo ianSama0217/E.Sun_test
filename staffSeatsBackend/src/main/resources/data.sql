@@ -1,4 +1,4 @@
-INSERT INTO employee(EMP_ID, NAME, EMAIL, FLOOR_SEAT_SEQ) VALUES
+INSERT IGNORE INTO employee(EMP_ID, NAME, EMAIL, FLOOR_SEAT_SEQ) VALUES
 	( '77777', 'Mike', 'mike123@gmail.com', null),
 	( '24001', 'Jack', 'jack123@gmail.com', null),
 	( '24002', 'Tony', 'tony123@gmail.com', null),
@@ -10,7 +10,7 @@ INSERT INTO employee(EMP_ID, NAME, EMAIL, FLOOR_SEAT_SEQ) VALUES
 	( '24008', 'Wick', 'wickkk@gmail.com', null),
 	( '24009', 'Tommy', 'tommyyyyy@gmail.com', null);
 	
-INSERT INTO seatingchart(FLOOR_SEAT_SEQ, FLOOR_NO, SEAT_NO, STATE) VALUES
+INSERT IGNORE INTO seatingchart(FLOOR_SEAT_SEQ, FLOOR_NO, SEAT_NO, STATE) VALUES
 	( '1F1', '1', '1', '空位'),
 	( '1F2', '1', '2', '空位'),
 	( '1F3', '1', '3', '空位'),
