@@ -70,4 +70,41 @@ const clearUser = (seatId) => {
     });
 };
 
-export default { getAllSeat, getSeatInfo, getAllEmp, insertUser, clearUser };
+//新增員工
+const createEmp = (req) => {
+  return axios({
+    url: `${API_URL}/employee`,
+    method: "POST",
+    data: req,
+  })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((e) => {
+      throw e;
+    });
+};
+
+//刪除員工
+const deleteEmp = (empId) => {
+  return axios({
+    url: `${API_URL}/employee/${empId}`,
+    method: "DELETE",
+  })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((e) => {
+      throw e;
+    });
+};
+
+export default {
+  getAllSeat,
+  getSeatInfo,
+  getAllEmp,
+  insertUser,
+  clearUser,
+  createEmp,
+  deleteEmp,
+};
