@@ -80,9 +80,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 			return new BasicRes(RtnMsg.EMP_ID_NOT_FOUND);
 		}
 
-		String seatId = employeeDao.findById(id).get().getFloorSeatSeq();
+		Employee employee = employeeDao.findById(id).get();
+
 		// 檢查員工是否有座位
-		if (seatingChartDao.existsById(seatId)) {
+		if (employee.getFloorSeatSeq() != null) {
+			String seatId = employeeDao.findById(id).get().getFloorSeatSeq();
+
 			try {
 				seatingChartDao.clearState(seatId);
 			} catch (Exception e) {
