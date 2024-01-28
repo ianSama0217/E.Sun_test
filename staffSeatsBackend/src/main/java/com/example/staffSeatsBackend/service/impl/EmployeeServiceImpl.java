@@ -12,9 +12,12 @@ import org.springframework.util.StringUtils;
 import com.example.staffSeatsBackend.constants.RtnMsg;
 import com.example.staffSeatsBackend.entity.Employee;
 import com.example.staffSeatsBackend.repository.EmployeeDao;
+import com.example.staffSeatsBackend.repository.SeatingChartDao;
 import com.example.staffSeatsBackend.service.ifs.EmployeeService;
 import com.example.staffSeatsBackend.vo.BasicRes;
 import com.example.staffSeatsBackend.vo.GetInfoRes;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -23,6 +26,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Autowired
 	private EmployeeDao employeeDao;
+
+	@Autowired
+	private SeatingChartDao seatingChartDao;
 
 	@Override
 	public BasicRes create(Employee employee) {
@@ -67,10 +73,22 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return new BasicRes(RtnMsg.CREATE_EMPLOYEE_SUCCESSFUL);
 	}
 
+	@Transactional
 	@Override
 	public BasicRes delete(String id) {
 		if (!employeeDao.existsById(id)) {
 			return new BasicRes(RtnMsg.EMP_ID_NOT_FOUND);
+		}
+
+		String seatId = employeeDao.findById(id).get().getFloorSeatSeq();
+		// 檢查員工是否有座位
+		if (seatingChartDao.existsById(seatId)) {
+			try {
+				seatingChartDao.clearState(seatId);
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+				return new BasicRes(RtnMsg.CLEAR_USER_FAILED);
+			}
 		}
 
 		try {
@@ -79,6 +97,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			logger.error(e.getMessage());
 			return new BasicRes(RtnMsg.DELETE_EMPLOYEE_FAILED);
 		}
+
 		return new BasicRes(RtnMsg.DELETE_EMPLOYEE_SUCCESSFUL);
 	}
 
