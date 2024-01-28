@@ -23,27 +23,66 @@ const clearEmp = () => {
   employeeId.value = null;
 };
 
-//點擊確認按鈕，如果有employeeId就新增，沒有就刪除
+//點擊確認按鈕，將Seats狀態更新成請選擇
 const setSeatHandler = async (seatId) => {
-  if (employeeId.value !== null) {
-    // insertUser請求資料
-    const req = {
-      emp_id: employeeId.value,
-      seat_id: seatId,
-    };
-    await insertUser(req);
-  } else {
-    await clearUser(seatId);
+  const seatToUpdate = seats.value.find(
+    (item) => item.seatingChart.floor_seat_seq === seatId
+  );
+
+  // 將對應的座位狀態更新為"請選擇"
+  if (seatToUpdate) {
+    seatToUpdate.seatingChart.state = "請選擇";
+
+    if (employeeId.value !== null) {
+      seatToUpdate.employee = {
+        emp_id: employeeId.value,
+      };
+    } else {
+      seatToUpdate.employee = null;
+    }
   }
 
-  //重新印出更新後的資料
-  seats.value = await getAllSeat();
   isDisplayHandler();
+};
+
+// 點擊送出按鈕後，更新座位狀態
+const saveSeatHandler = async () => {
+  //取出狀態為請選擇的座位
+  const chooseSeats = seats.value.filter(
+    (item) => item.seatingChart.state == "請選擇"
+  );
+
+  // 先執行 clearUser
+  await Promise.all(
+    chooseSeats.map(async (item) => {
+      // 若 employee 資料不為 null，則清除資料
+      if (item.employee == null) {
+        await clearUser(item.seatingChart.floor_seat_seq);
+      }
+    })
+  );
+
+  // 再執行 insertUser
+  await Promise.all(
+    chooseSeats.map(async (item) => {
+      // 若 employee 資料不為 null，則新增資料
+      if (item.employee !== null) {
+        const req = {
+          emp_id: item.employee.emp_id,
+          seat_id: item.seatingChart.floor_seat_seq,
+        };
+        await insertUser(req);
+      }
+    })
+  );
+
+  //更新資料
+  seats.value = await getAllSeat();
 };
 
 const getSeatInfoHandler = async (id) => {
   seat = await getSeatInfo(id);
-  if (seat.employee !== null) {
+  if (seat.employee != null) {
     employeeId.value = seat.employee.emp_id;
   } else {
     employeeId.value = null;
@@ -66,6 +105,7 @@ onMounted(async () => {
           class="seatBox"
           :class="{
             empty: item.seatingChart.state == '空位',
+            choose: item.seatingChart.state == '請選擇',
             used: item.seatingChart.state == '已佔用',
           }"
         >
@@ -95,7 +135,7 @@ onMounted(async () => {
       </div>
     </div>
 
-    <button type="button">送出</button>
+    <button type="button" @click="saveSeatHandler">送出</button>
   </div>
 
   <!-- 彈跳視窗 -->
@@ -104,9 +144,10 @@ onMounted(async () => {
     <p>座位{{ seat.seatingChart.seat_no }}</p>
     <span>選擇員工:</span>
     <select v-model="employeeId">
-      <option v-if="seat.employee" :value="seat.employee.emp_id">
+      <!-- <option v-if="seat.employee" :value="seat.employee.emp_id">
         {{ seat.employee.emp_id }}
-      </option>
+      </option> -->
+      <option disabled selected>請選擇員工編號</option>
       <option v-for="item in emps" :value="item.emp_id">
         {{ item.emp_id }}
       </option>
@@ -154,6 +195,9 @@ onMounted(async () => {
 
       .empty {
         background-color: #f1f1f1;
+      }
+      .choose {
+        background-color: #87ff96;
       }
 
       .used {
